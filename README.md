@@ -9,7 +9,6 @@ The Task Management API is a Spring Boot application designed to handle the mana
 - [Features](#features)
 - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
 
 ## Features
 
