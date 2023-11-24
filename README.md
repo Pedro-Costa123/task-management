@@ -2,7 +2,7 @@
 
 The Task Management API is a Spring Boot application designed to handle the management of tasks for users. It provides endpoints for creating, updating, and retrieving tasks, as well as user management functionalities.
 
-### Project Objective: improve my spring boot skills
+#### Project Objective: improve my spring boot skills
 
 ## Table of Contents
 
