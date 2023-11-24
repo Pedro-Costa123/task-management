@@ -37,4 +37,10 @@ public class UserController {
         userService.deleteUser(id);
         return "User deleted with id: " + id;
     }
+
+    @PutMapping("/update")
+    public String updateUser(@RequestBody User user) {
+        User userUpdated = userService.updateUser(user);
+        return "User updated with id: " + userUpdated.getUserId();
+    }
 }

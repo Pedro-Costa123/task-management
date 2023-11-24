@@ -49,4 +49,12 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    public User updateUser(User user) {
+        Long userId = user.getUserId();
+        if (userRepository.findById(userId).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with id " + userId + " to update");
+        }
+        return userRepository.save(user);
+    }
+
 }
