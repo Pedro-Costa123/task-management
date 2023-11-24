@@ -54,4 +54,24 @@ public class TaskService {
         taskRepository.deleteById(id);
     }
 
+    public int deleteAllUserTasks(Long userId) {
+        if (userRepository.findById(userId).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with id " + userId + " to delete tasks");
+        }
+        int tasksDeleted = taskRepository.findByUserId(userId).size();
+        taskRepository.deleteByUserId(userId);
+        return tasksDeleted;
+    }
+
+    public Task updateTask(Task task) {
+        Long taskId = task.getTaskId();
+        if (taskRepository.findById(taskId).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found with id " + taskId + " to update");
+        }
+        if (userRepository.findById(task.getUserId()).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with id " + task.getUserId() + " to update task");
+        }
+        return taskRepository.save(task);
+    }
+
 }

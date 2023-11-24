@@ -42,4 +42,16 @@ public class TaskController {
         taskService.deleteTask(id);
         return "Task deleted with id: " + id;
     }
+
+    @DeleteMapping("/deleteAllUserTasks")
+    public String deleteAllUserTasks(@RequestParam Long userId) {
+        int tasksDeleted = taskService.deleteAllUserTasks(userId);
+        return "Number of tasks deleted: " + tasksDeleted;
+    }
+
+    @PutMapping("/update")
+    public String updateTask(@RequestBody Task task) {
+        Task taskUpdated = taskService.updateTask(task);
+        return "Task updated with id: " + taskUpdated.getTaskId();
+    }
 }
