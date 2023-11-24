@@ -2,9 +2,7 @@ package com.personal.project.pedro.taskmanagement.controllers;
 
 import com.personal.project.pedro.taskmanagement.entities.User;
 import com.personal.project.pedro.taskmanagement.services.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,4 +21,20 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @GetMapping("/getById")
+    public User getUserById(@RequestParam Long id) {
+        return userService.getUserById(id);
+    }
+
+    @PostMapping("/create")
+    public String createUser(@RequestBody User user) {
+        User userCreated = userService.createUser(user);
+        return "User created with id: " + userCreated.getUserId();
+    }
+
+    @DeleteMapping("/delete")
+    public String deleteUser(@RequestParam Long id) {
+        userService.deleteUser(id);
+        return "User deleted with id: " + id;
+    }
 }
