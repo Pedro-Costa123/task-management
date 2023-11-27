@@ -3,11 +3,14 @@ package com.personal.project.pedro.taskmanagement.services;
 import com.personal.project.pedro.taskmanagement.dao.TaskRepository;
 import com.personal.project.pedro.taskmanagement.dao.UserRepository;
 import com.personal.project.pedro.taskmanagement.entities.Task;
+import com.personal.project.pedro.taskmanagement.enums.Status;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,6 +75,35 @@ public class TaskService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with id " + task.getUserId() + " to update task");
         }
         return taskRepository.save(task);
+    }
+
+    public Task updateTaskStatus(Long taskId, String status) {
+        Optional<Task> task = taskRepository.findById(taskId);
+        if (task.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found with id " + taskId + " to update");
+        }
+        for (Status checkStatus : Status.values()) {
+            if (checkStatus.getValue().equals(status.toUpperCase())) {
+                task.get().setStatus(status.toUpperCase());
+                return taskRepository.save(task.get());
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Status " + status + " is not valid, needs to be one of: " + Arrays.toString(Status.values()) + " to update task status");
+    }
+
+    public Task updateTaskDueDate(Long taskId, int days) {
+        Optional<Task> task = taskRepository.findById(taskId);
+        if (task.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found with id " + taskId + " to update");
+        }
+        if (days < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Days " + days + " is not valid, needs to be a positive number to update task due date");
+        }
+        LocalDate date = LocalDate.parse(task.get().getDueDate());
+        date = date.plusDays(days);
+        task.get().setDueDate(date.toString());
+        return taskRepository.save(task.get());
+
     }
 
 }

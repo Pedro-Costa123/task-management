@@ -54,4 +54,16 @@ public class TaskController {
         Task taskUpdated = taskService.updateTask(task);
         return "Task updated with id: " + taskUpdated.getTaskId();
     }
+
+    @PutMapping("/updateTaskStatus")
+    public String updateTaskStatus(@RequestParam Long id, @RequestParam String status) {
+        Task taskUpdated = taskService.updateTaskStatus(id, status);
+        return "Task updated with id: " + taskUpdated.getTaskId();
+    }
+
+    @PutMapping("/updateTaskDueDate")
+    public String updateTaskDueDate(@RequestParam Long id, @RequestParam int days) {
+        Task taskUpdated = taskService.updateTaskDueDate(id, days);
+        return "Task updated with id: " + taskUpdated.getTaskId();
+    }
 }
