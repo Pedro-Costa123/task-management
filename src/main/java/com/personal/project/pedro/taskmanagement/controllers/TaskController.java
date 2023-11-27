@@ -31,6 +31,11 @@ public class TaskController {
         return taskService.getTasksByUserId(userId);
     }
 
+    @GetMapping("/getByStatusAndUserId")
+    public List<Task> getTasksByStatusAndUserId(@RequestParam String status, @RequestParam Long userId) {
+        return taskService.getTasksByStatusAndUserId(status, userId);
+    }
+
     @PostMapping("/create")
     public String createTask(@RequestBody Task task) {
         Task taskCreated = taskService.createTask(task);

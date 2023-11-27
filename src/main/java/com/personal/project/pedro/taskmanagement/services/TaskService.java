@@ -50,6 +50,18 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
+    public List<Task> getTasksByStatusAndUserId(String status, Long userId) {
+        if (userRepository.findById(userId).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with id " + userId + " to get tasks");
+        }
+        for (Status checkStatus : Status.values()) {
+            if (checkStatus.getValue().equals(status.toUpperCase())) {
+                return taskRepository.findByStatusAndUserId(status.toUpperCase(), userId);
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Status " + status + " is not valid, needs to be one of: " + Arrays.toString(Status.values()) + " to get tasks by status and user id");
+    }
+
     public void deleteTask(Long id) {
         if (taskRepository.findById(id).isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found with id " + id + " to delete");
