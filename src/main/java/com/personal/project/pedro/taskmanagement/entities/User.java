@@ -1,7 +1,6 @@
 package com.personal.project.pedro.taskmanagement.entities;
 
 import jakarta.persistence.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Objects;
 
@@ -23,17 +22,21 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "enabled")
+    private int enabled;
+
     public User() {
     }
 
-    public User(String username, String password, String email) {
+    public User(String username, String password, String email, int enabled) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.enabled = enabled;
     }
 
-    public User(Long userId, String username, String password, String email) {
-        this(username, password, email);
+    public User(Long userId, String username, String password, String email, int enabled) {
+        this(username, password, email, enabled);
         this.userId = userId;
     }
 
@@ -58,7 +61,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = "{bcrypt}" + new BCryptPasswordEncoder().encode(password);
+        this.password = password;
     }
 
     public String getEmail() {
@@ -69,17 +72,25 @@ public class User {
         this.email = email;
     }
 
+    public int getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(int enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(userId, user.userId) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(email, user.email);
+        return Objects.equals(userId, user.userId) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(email, user.email) && Objects.equals(enabled, user.enabled);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, username, password, email);
+        return Objects.hash(userId, username, password, email, enabled);
     }
 
     @Override
@@ -88,6 +99,7 @@ public class User {
                 "userId=" + userId +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 }

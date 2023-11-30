@@ -1,17 +1,17 @@
 package com.personal.project.pedro.taskmanagement.config;
 
 import com.personal.project.pedro.taskmanagement.dao.UserRepository;
-import com.personal.project.pedro.taskmanagement.entities.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-import java.util.Collections;
+import javax.sql.DataSource;
 
 @Configuration
 public class SecurityConfig {
@@ -29,25 +29,22 @@ public class SecurityConfig {
                                 .requestMatchers("/api/users/**").authenticated()
                                 .anyRequest().permitAll()
                 )
-                .httpBasic(Customizer.withDefaults())
-                .userDetailsService(userDetailsService());
+                .httpBasic(Customizer.withDefaults());
         http.csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        return username -> {
-            User user = userRepository.findByUsername(username);
-            if (user != null) {
-                return new org.springframework.security.core.userdetails.User(
-                        user.getUsername(),
-                        user.getPassword(),
-                        Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
-            } else {
-                throw new RuntimeException("User not found with username: " + username);
-            }
-        };
+    public UserDetailsManager userDetailsManager(DataSource dataSource) {
+        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
+        jdbcUserDetailsManager.setUsersByUsernameQuery("select username, password, enabled from users where username=?");
+        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery("select u.username, a.authority from users u inner join authorities a on u.user_id = a.id where u.username = ?");
+        return jdbcUserDetailsManager;
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(12);
     }
 
 }
