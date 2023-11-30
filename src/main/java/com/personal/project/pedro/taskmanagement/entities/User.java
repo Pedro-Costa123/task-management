@@ -16,19 +16,23 @@ public class User {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "password")
+    private String password;
+
     @Column(name = "email")
     private String email;
 
     public User() {
     }
 
-    public User(String username, String email) {
+    public User(String username, String password, String email) {
         this.username = username;
+        this.password = password;
         this.email = email;
     }
 
-    public User(Long userId, String username, String email) {
-        this(username, email);
+    public User(Long userId, String username, String password, String email) {
+        this(username, password, email);
         this.userId = userId;
     }
 
@@ -48,6 +52,14 @@ public class User {
         this.username = username;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -61,12 +73,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(userId, user.userId) && Objects.equals(username, user.username) && Objects.equals(email, user.email);
+        return Objects.equals(userId, user.userId) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(email, user.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, username, email);
+        return Objects.hash(userId, username, password, email);
     }
 
     @Override

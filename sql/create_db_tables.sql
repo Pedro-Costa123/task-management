@@ -6,6 +6,7 @@ use task_management;
 CREATE TABLE users (
     user_id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL,
     email VARCHAR(100) NOT NULL
 );
 
@@ -21,10 +22,13 @@ CREATE TABLE tasks (
 );
 
 -- Insert Users
-INSERT INTO users (username, email) VALUES
-('john_doe', 'john.doe@example.com'),
-('jane_smith', 'jane.smith@example.com'),
-('bob_jackson', 'bob.jackson@example.com');
+-- Insert Users with Bcrypt-hashed Passwords
+-- 1234
+INSERT INTO users (username, password, email) VALUES
+('john_doe', '{bcrypt}$2a$12$T/IGcTDpls0Fd9qu69pTN.7k0i4GTTowG6NCPGx6z3VEemklyRncu', 'john.doe@example.com'),
+('jane_smith', '{bcrypt}$2a$12$T/IGcTDpls0Fd9qu69pTN.7k0i4GTTowG6NCPGx6z3VEemklyRncu', 'jane.smith@example.com'),
+('bob_jackson', '{bcrypt}$2a$12$T/IGcTDpls0Fd9qu69pTN.7k0i4GTTowG6NCPGx6z3VEemklyRncu', 'bob.jackson@example.com');
+
 
 -- Insert Tasks
 INSERT INTO tasks (title, description, due_date, status, user_id) VALUES
