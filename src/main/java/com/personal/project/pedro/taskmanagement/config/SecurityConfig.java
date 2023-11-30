@@ -1,6 +1,5 @@
 package com.personal.project.pedro.taskmanagement.config;
 
-import com.personal.project.pedro.taskmanagement.dao.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -15,12 +14,6 @@ import javax.sql.DataSource;
 
 @Configuration
 public class SecurityConfig {
-
-    private UserRepository userRepository;
-
-    public SecurityConfig(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
