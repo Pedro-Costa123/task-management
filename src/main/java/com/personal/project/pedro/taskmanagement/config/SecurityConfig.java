@@ -16,10 +16,7 @@ import javax.sql.DataSource;
 @Configuration
 public class SecurityConfig {
 
-    private UserRepository userRepository;
-
-    public SecurityConfig(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public SecurityConfig() {
     }
 
     @Bean
