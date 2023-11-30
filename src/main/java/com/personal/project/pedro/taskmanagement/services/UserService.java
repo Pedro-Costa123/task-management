@@ -36,6 +36,7 @@ public class UserService {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User with email " + user.getEmail() + " already exists");
         }
+        user.setPassword(user.getPassword());
         return userRepository.save(user);
     }
 

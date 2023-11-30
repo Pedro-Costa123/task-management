@@ -1,6 +1,7 @@
 package com.personal.project.pedro.taskmanagement.entities;
 
 import jakarta.persistence.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Objects;
 
@@ -57,7 +58,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = "{bcrypt}" + new BCryptPasswordEncoder().encode(password);
     }
 
     public String getEmail() {
